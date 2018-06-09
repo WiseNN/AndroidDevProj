@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">MobileDev2</string>
+    <string name="btn_left_text">Hey There From Left Button!</string>
+    <string name="btn_right_text">Hey There From Right Button!</string>
+    <string name="error_add_fragment">This fragment\'s parent does not exist or has been destroyed</string>
 </resources>

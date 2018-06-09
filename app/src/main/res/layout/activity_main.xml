@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_parent_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -9,50 +10,80 @@
     tools:context=".MainActivity">
 
     <RelativeLayout
+        android:id="@+id/header_layout"
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:background="@android:color/holo_blue_bright"
         android:layout_alignParentTop="true">
 
         <Button
+            android:id="@+id/btn_button1"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:text="Button2"
+
             android:layout_margin="10dp"
             android:textColor="@android:color/black"
-            android:background="@android:color/holo_orange_light"
-            android:layout_alignParentLeft="true"/>
+            android:background="@drawable/btn_rounded_color_rect"
+            android:layout_alignParentLeft="true"
+            />
         <TextView
+            android:id="@+id/tv_summer_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="2018SummerEx"
             android:layout_centerInParent="true"
             android:textSize="20sp"
             android:textColor="@android:color/white"/>
-        <Button
+        <ImageButton
+            android:id="@+id/btn_button2"
+            android:src="@drawable/btn_image_avatar_pressed"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:text="Button2"
             android:layout_margin="10dp"
             android:textColor="@android:color/white"
-            android:background="@android:color/holo_orange_light"
+            android:background="@android:color/transparent"
             android:layout_alignParentRight="true"/>
 
     </RelativeLayout>
 
+
+
+
+    <FrameLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/placeholder_frame_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/header_layout"
+        android:layout_above="@+id/btn_custom_menu_bar"
+        android:background="@android:color/holo_purple"
+        android:layout_centerVertical="true"
+
+        >
+    </FrameLayout>
+
+
+
+
+
+
     <LinearLayout
+        android:id="@+id/btn_custom_menu_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_alignParentBottom="true"
         android:background="@android:color/holo_green_light">
         <Button
+            android:id="@+id/btn_demo"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:background="@android:color/transparent"
             android:text="Demo"
             android:layout_weight="1"/>
         <Button
+            android:id="@+id/btn_work"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:background="@android:color/transparent"

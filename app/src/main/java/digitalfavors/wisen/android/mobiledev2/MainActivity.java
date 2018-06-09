@@ -17,6 +17,7 @@ public class MainActivity extends AppCompatActivity
     Button workBtn;
     Button topBtn1;
     ImageButton topBtn2;
+    Toast msgToast = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -38,7 +39,13 @@ public class MainActivity extends AppCompatActivity
         topBtn1.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                Toast.makeText(MainActivity.this, R.string.btn_left_text, Toast.LENGTH_LONG).show();
+                if(msgToast != null && msgToast.getView().getWindowVisibility() == View.VISIBLE)
+                {
+                    msgToast.cancel();
+                }
+                msgToast = Toast.makeText(MainActivity.this, R.string.btn_left_text, Toast.LENGTH_LONG);
+                msgToast.show();
+
 
             }
         });
@@ -47,7 +54,12 @@ public class MainActivity extends AppCompatActivity
         topBtn2.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                Toast.makeText(MainActivity.this, R.string.btn_right_text, Toast.LENGTH_LONG).show();
+                if(msgToast != null && msgToast.getView().getWindowVisibility() == View.VISIBLE)
+                {
+                    msgToast.cancel();
+                }
+                msgToast = Toast.makeText(MainActivity.this, R.string.btn_right_text, Toast.LENGTH_LONG);
+                msgToast.show();
             }
         });
 

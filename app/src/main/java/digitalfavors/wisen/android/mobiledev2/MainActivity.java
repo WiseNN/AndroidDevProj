@@ -57,11 +57,19 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
 
+                Boolean demoFragIsPresented = (Boolean) demoBtn.getTag();
 
-                FragmentManager fragManager = getFragmentManager();
-                FragmentTransaction fragTransaction = fragManager.beginTransaction();
-                fragTransaction.replace(R.id.placeholder_frame_layout, new DemoFragment());
-                fragTransaction.commit();
+                //if demo fragment is not visible, show & change isPresented frags
+                //for both buttons
+                if(demoFragIsPresented == null || !demoFragIsPresented) {
+                    demoBtn.setTag(true);
+                    workBtn.setTag(false);
+                    FragmentManager fragManager = getFragmentManager();
+                    FragmentTransaction fragTransaction = fragManager.beginTransaction();
+                    fragTransaction.replace(R.id.placeholder_frame_layout, new DemoFragment());
+                    fragTransaction.commit();
+                }
+
 
 
 
@@ -74,10 +82,19 @@ public class MainActivity extends AppCompatActivity
             public void onClick(View v) {
 
 
-                FragmentManager fragManager = getFragmentManager();
-                FragmentTransaction fragTransaction = fragManager.beginTransaction();
-                fragTransaction.replace(R.id.placeholder_frame_layout, new WorkFragment());
-                fragTransaction.commit();
+                Boolean workFragIsPresented = (Boolean) workBtn.getTag();
+
+                //if work fragment is not visible, show & change isPresented frags
+                //for both buttons
+                if(workFragIsPresented == null || !workFragIsPresented) {
+
+                    workBtn.setTag(true);
+                    demoBtn.setTag(false);
+                    FragmentManager fragManager = getFragmentManager();
+                    FragmentTransaction fragTransaction = fragManager.beginTransaction();
+                    fragTransaction.replace(R.id.placeholder_frame_layout, new WorkFragment());
+                    fragTransaction.commit();
+                }
 
 
 

@@ -18,7 +18,7 @@ import java.util.Arrays;
 public class DemoFragment extends Fragment
 {
     ListView myListView;
-    String[] stringList;
+    ArrayList<String> stringList;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState)
@@ -26,7 +26,7 @@ public class DemoFragment extends Fragment
         super.onCreate(savedInstanceState);
 
         int arySize = 20;
-         stringList = new String[arySize];
+         stringList = new ArrayList<>();
 
         for(int i=0; i<arySize;i++)
         {
@@ -34,10 +34,10 @@ public class DemoFragment extends Fragment
             //get letter from charCode
             String letter = Character.toString((char)(97+i));
             //add letter to list
-            stringList[i] = letter;
+            stringList.add(letter);
         }
 
-        Log.i("List Info: ", Arrays.toString(stringList));
+        Log.i("List Info ", stringList.toString());
 
     }
 
@@ -55,6 +55,7 @@ public class DemoFragment extends Fragment
 
             ArrayAdapter<String> aa = new ArrayAdapter<String>(getActivity().getBaseContext(), android.R.layout.simple_list_item_1, stringList);
 
+//            CustomListAdapter listAdapter = new CustomListAdapter();
             myListView.setAdapter(aa);
 
 

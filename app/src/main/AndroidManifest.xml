@@ -16,6 +16,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".NewActivity"
+            android:parentActivityName=".MainActivity">
+
+        </activity>
+        <activity android:name=".MyViewPager"
+            android:parentActivityName=".MainActivity"/>
     </application>
 
 </manifest>

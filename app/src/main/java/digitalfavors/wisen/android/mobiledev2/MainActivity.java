@@ -1,13 +1,17 @@
 package digitalfavors.wisen.android.mobiledev2;
 
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
+//import android.app.FragmentManager;
+//import android.app.FragmentTransaction;
 import android.media.Image;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity
@@ -76,8 +80,8 @@ public class MainActivity extends AppCompatActivity
                 if(demoFragIsPresented == null || !demoFragIsPresented) {
                     demoBtn.setTag(true);
                     workBtn.setTag(false);
-                    FragmentManager fragManager = getFragmentManager();
-                    FragmentTransaction fragTransaction = fragManager.beginTransaction();
+                    android.support.v4.app.FragmentManager fragManager = getSupportFragmentManager();
+                    android.support.v4.app.FragmentTransaction fragTransaction = fragManager.beginTransaction();
                     fragTransaction.replace(R.id.placeholder_frame_layout, new DemoFragment());
                     fragTransaction.commit();
                 }
@@ -102,7 +106,7 @@ public class MainActivity extends AppCompatActivity
 
                     workBtn.setTag(true);
                     demoBtn.setTag(false);
-                    FragmentManager fragManager = getFragmentManager();
+                    FragmentManager fragManager = getSupportFragmentManager();
                     FragmentTransaction fragTransaction = fragManager.beginTransaction();
                     fragTransaction.replace(R.id.placeholder_frame_layout, new WorkFragment());
                     fragTransaction.commit();

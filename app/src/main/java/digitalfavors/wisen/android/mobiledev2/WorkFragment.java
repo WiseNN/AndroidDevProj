@@ -8,7 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-public class WorkFragment extends Fragment {
+public class WorkFragment extends android.support.v4.app.Fragment
+{
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

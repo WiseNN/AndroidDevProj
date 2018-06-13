@@ -14,30 +14,44 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedHashMap;
 
-public class DemoFragment extends Fragment
+public class DemoFragment extends android.support.v4.app.Fragment
 {
     ListView myListView;
-    ArrayList<String> stringList;
+    LinkedHashMap<String,String> dataToIntentClassMap;
+
+
+    int DEMO_FRAG_RESOURCE_ID = 7836441;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
 
-        int arySize = 20;
-         stringList = new ArrayList<>();
+        String[] classList =  {
+                "digitalfavors.wisen.android.mobiledev2.NewActivity",
+                "digitalfavors.wisen.android.mobiledev2.MyViewPager",
+                "digitalfavors.wisen.android.mobiledev2.MyViewPager"
+        };
+        String[] dataList = {
+                "A","B","C"
+        };
 
-        for(int i=0; i<arySize;i++)
+        int size = 3;
+         dataToIntentClassMap = new LinkedHashMap<>();
+
+        for(int i=0; i<size;i++)
         {
 
             //get letter from charCode
             String letter = Character.toString((char)(97+i));
+
             //add letter to list
-            stringList.add(letter);
+            dataToIntentClassMap.put(dataList[i], classList[i]);
         }
 
-        Log.i("List Info ", stringList.toString());
+        Log.i("List Info ", dataToIntentClassMap.toString());
 
     }
 
@@ -53,10 +67,13 @@ public class DemoFragment extends Fragment
             View frameLayoutView = inflater.inflate(R.layout.fragment_demo, container, false);
             myListView = frameLayoutView.findViewById(R.id.list_view);
 
-            ArrayAdapter<String> aa = new ArrayAdapter<String>(getActivity().getBaseContext(), android.R.layout.simple_list_item_1, stringList);
+
+//            ArrayAdapter<String> aa = new ArrayAdapter<String>(getActivity().getBaseContext(), android.R.layout.simple_list_item_1, stringList);
+            CustomListAdapter cc = new CustomListAdapter(getActivity().getBaseContext(),DEMO_FRAG_RESOURCE_ID,dataToIntentClassMap, myListView);
 
 //            CustomListAdapter listAdapter = new CustomListAdapter();
-            myListView.setAdapter(aa);
+            myListView.setAdapter(cc);
+
 
 
             return frameLayoutView;

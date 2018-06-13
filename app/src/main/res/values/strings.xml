@@ -3,4 +3,5 @@
     <string name="btn_left_text">Hey There From Left Button!</string>
     <string name="btn_right_text">Hey There From Right Button!</string>
     <string name="error_add_fragment">This fragment\'s parent does not exist or has been destroyed</string>
+    <string name="main_list_noSelection_error">Sorry! \n there is no resource for this item</string>
 </resources>

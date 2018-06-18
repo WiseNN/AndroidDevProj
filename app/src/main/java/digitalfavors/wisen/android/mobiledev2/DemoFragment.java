@@ -1,25 +1,25 @@
 package digitalfavors.wisen.android.mobiledev2;
 
-import android.app.Fragment;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedHashMap;
 
 public class DemoFragment extends android.support.v4.app.Fragment
 {
     ListView myListView;
     LinkedHashMap<String,String> dataToIntentClassMap;
+    String NOTIF_CHANNEL_ID = "3284";
 
 
     int DEMO_FRAG_RESOURCE_ID = 7836441;
@@ -32,17 +32,19 @@ public class DemoFragment extends android.support.v4.app.Fragment
         String[] classList =  {
                 "digitalfavors.wisen.android.mobiledev2.NewActivity",
                 "digitalfavors.wisen.android.mobiledev2.MyViewPager",
-                "digitalfavors.wisen.android.mobiledev2.MyViewPager"
+                "digitalfavors.wisen.android.mobiledev2.MyViewPager",
+                "","",""
         };
         String[] dataList = {
-                "A","B","C"
+                "A","B","C","Small Notification", "Large Notification", "Pic Notification"
         };
 
-        int size = 3;
+        int size = dataList.length;
          dataToIntentClassMap = new LinkedHashMap<>();
 
         for(int i=0; i<size;i++)
         {
+
 
             //get letter from charCode
             String letter = Character.toString((char)(97+i));
@@ -69,7 +71,7 @@ public class DemoFragment extends android.support.v4.app.Fragment
 
 
 //            ArrayAdapter<String> aa = new ArrayAdapter<String>(getActivity().getBaseContext(), android.R.layout.simple_list_item_1, stringList);
-            CustomListAdapter cc = new CustomListAdapter(getActivity().getBaseContext(),DEMO_FRAG_RESOURCE_ID,dataToIntentClassMap, myListView);
+            CustomListAdapter cc = new CustomListAdapter(this, getActivity().getBaseContext(),DEMO_FRAG_RESOURCE_ID,dataToIntentClassMap, myListView);
 
 //            CustomListAdapter listAdapter = new CustomListAdapter();
             myListView.setAdapter(cc);
@@ -86,12 +88,94 @@ public class DemoFragment extends android.support.v4.app.Fragment
     }
 
 
+    //process all button events without intents
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
 
         super.onActivityCreated(savedInstanceState);
 
     }
+
+    int NOTIF_ID = 0;
+    void processActionEvent(String cellTitle)
+    {
+
+        switch(cellTitle)
+        {
+            case "Small Notification" : {
+                Toast.makeText(getContext().getApplicationContext(), R.string.hello_text, Toast.LENGTH_SHORT).show();
+
+               NOTIF_ID = createSmallNotification(3234);
+               break;
+
+            }
+            case "Large Notification" : {
+                Toast.makeText(getContext().getApplicationContext(), R.string.hello_text, Toast.LENGTH_SHORT).show();
+
+                NOTIF_ID = createLargeNotification(35434);
+                break;
+
+            }
+            case "Pic Notification" : {
+                Toast.makeText(getContext().getApplicationContext(), R.string.hello_text, Toast.LENGTH_SHORT).show();
+
+                NOTIF_ID = createPicNotification(363749);
+                break;
+
+            }
+
+
+        }
+    }
+
+
+
+    int createSmallNotification(int withID)
+    {
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getContext());
+
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getContext().getApplicationContext(),NOTIF_CHANNEL_ID)
+                .setSmallIcon(R.drawable.notification)
+                .setContentTitle("WiseApp")
+                .setContentText("This is your man, from Wise Solutions. DJ HeyWiise! #VibeCityENT")
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
+        notificationManager.notify(withID, mBuilder.build());
+        return withID;
+    }
+
+    int createLargeNotification(int withID)
+    {
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getContext());
+
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getContext().getApplicationContext(),NOTIF_CHANNEL_ID)
+                .setSmallIcon(R.drawable.notification)
+                .setContentTitle("WiseApp")
+                .setStyle(new NotificationCompat.BigTextStyle().bigText("Line 1\nLine 2\nLine 3\n" +
+                        "Line 4\n Line 5"))
+                .setContentText("This is your man, from Wise Solutions. DJ HeyWiise! #VibeCityENT")
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
+        notificationManager.notify(withID, mBuilder.build());
+        return withID;
+    }
+
+    int createPicNotification(int withID)
+    {
+        Bitmap bm = BitmapFactory .decodeResource(getResources(),R.drawable.city);
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getContext());
+
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getContext().getApplicationContext(),NOTIF_CHANNEL_ID)
+                .setSmallIcon(R.drawable.notification)
+                .setContentTitle("WiseApp")
+                .setStyle(new NotificationCompat.BigPictureStyle().bigPicture(bm))
+                .setContentText("This is your man, from Wise Solutions. DJ HeyWiise! #VibeCityENT")
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
+        notificationManager.notify(withID, mBuilder.build());
+        return withID;
+    }
+
 
 
 

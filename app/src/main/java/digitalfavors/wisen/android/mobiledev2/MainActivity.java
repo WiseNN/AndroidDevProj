@@ -14,6 +14,13 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+
+// --- Tasks ---
+//        Notification
+//        AdvancedListView (Use ViewHolder)
+//        AdvancedViewPager
+//        Difference between intent and Bundle
+
 public class MainActivity extends AppCompatActivity
 {
 
@@ -119,6 +126,8 @@ public class MainActivity extends AppCompatActivity
 
 
     }
+
+
 }
 
 //find views

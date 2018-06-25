@@ -13,6 +13,7 @@
     android:textSize="15pt"
     android:background="@android:color/black"/>
     <ListView
+        android:id="@+id/lv_for_messages"
         android:layout_width="match_parent"
         android:layout_height="match_parent"></ListView>
 

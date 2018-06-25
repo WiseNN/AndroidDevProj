@@ -95,8 +95,8 @@ public class CustomListAdapter extends BaseAdapter
                     public void onClick(View viewCell)
                     {
                         //if intent is not Available, hand this action back to Fragment
-                        String intentName = intentClassNameList.get(position);
-                        if(intentName.equals("") || intentName.equals(null))
+                        String className = intentClassNameList.get(position);
+                        if(className.equals("") || className.equals(null))
                         {
                             ((DemoFragment)mCurrentFragment).processActionEvent(dataList.get(position));
                         }else{

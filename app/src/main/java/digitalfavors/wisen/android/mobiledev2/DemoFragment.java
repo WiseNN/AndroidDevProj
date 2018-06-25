@@ -4,6 +4,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.util.Log;
@@ -29,14 +31,22 @@ public class DemoFragment extends android.support.v4.app.Fragment
     {
         super.onCreate(savedInstanceState);
 
+
         String[] classList =  {
                 "digitalfavors.wisen.android.mobiledev2.NewActivity",
                 "digitalfavors.wisen.android.mobiledev2.MyViewPager",
                 "digitalfavors.wisen.android.mobiledev2.MyViewPager",
-                "","",""
+                "","","",
+                "digitalfavors.wisen.android.mobiledev2.MessangerView",
+                "digitalfavors.wisen.android.mobiledev2.AdvancedViewPagerActivity",
+                "digitalfavors.wisen.android.mobiledev2.RadioButtonActivity",
+                "digitalfavors.wisen.android.mobiledev2.CheckBoxActivity",
+                "digitalfavors.wisen.android.mobiledev2.DialogActivity"
         };
         String[] dataList = {
-                "A","B","C","Small Notification", "Large Notification", "Pic Notification"
+                "A","B","C","Small Notification", "Large Notification", "Pic Notification",
+                "Messenger","AdvancedViewPager","Radio Button Activity","Check Box Activity",
+                "Dialogs"
         };
 
         int size = dataList.length;
@@ -123,6 +133,7 @@ public class DemoFragment extends android.support.v4.app.Fragment
                 break;
 
             }
+
 
 
         }

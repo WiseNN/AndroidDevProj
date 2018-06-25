@@ -14,6 +14,8 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import butterknife.BindView;
+
 
 // --- Tasks ---
 //        Notification
@@ -24,6 +26,7 @@ import android.widget.Toast;
 public class MainActivity extends AppCompatActivity
 {
 
+
     Button demoBtn;
     Button workBtn;
     Button topBtn1;
@@ -33,6 +36,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
+
         super.onCreate(savedInstanceState);
 
         //set content view is used to inflate the layout

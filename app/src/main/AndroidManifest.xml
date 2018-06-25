@@ -23,6 +23,17 @@
         </activity>
         <activity android:name=".MyViewPager"
             android:parentActivityName=".MainActivity"/>
+        <activity android:name=".MessangerView"
+            android:parentActivityName=".MainActivity"/>
+
+        <activity android:name=".AdvancedViewPagerActivity"
+            android:parentActivityName=".MainActivity"/>
+        <activity android:name=".RadioButtonActivity"
+            android:parentActivityName=".MainActivity"/>
+        <activity android:name=".CheckBoxActivity"
+            android:parentActivityName=".MainActivity"/>
+        <activity android:name=".DialogActivity"
+            android:parentActivityName=".DialogActivity"/>
     </application>
 
 </manifest>

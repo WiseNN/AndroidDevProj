@@ -1,6 +1,5 @@
 package digitalfavors.wisen.android.mobiledev2;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -8,13 +7,12 @@ import android.view.View;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
-import java.util.EventListener;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class DialogActivity extends AppCompatActivity {
+public class DialogActivity extends AppCompatActivity
+{
 
     int myCheckedId;
     @BindView(R.id.dialog_radio_group)
@@ -37,6 +35,7 @@ public class DialogActivity extends AppCompatActivity {
 
                     }
                 };
+
                 CustomDialog dialog = new CustomDialog(DialogActivity.this  ,listener);
                 dialog.show();
             }

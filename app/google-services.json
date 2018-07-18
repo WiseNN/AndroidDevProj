@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "685743412360",
+    "firebase_url": "https://swiftchatproj.firebaseio.com",
+    "project_id": "swiftchatproj",
+    "storage_bucket": "swiftchatproj.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:685743412360:android:fe2e8faff1ea5413",
+        "android_client_info": {
+          "package_name": "digitalfavors.wisen.android.mobiledev2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "685743412360-9on6se7k7hun7af4f0msb2np6l9gvg97.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA4XpevwZtmrl66RbVbOkb7hqx__G_12UM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

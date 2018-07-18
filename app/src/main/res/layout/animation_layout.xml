@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ImageView
+    android:id="@+id/img_view_bouncy_ball"
+    android:layout_width="100dp"
+    android:layout_height="100dp"
+    android:src="@drawable/ball"/>
+    <ImageView
+        android:id="@+id/img_view_bouncy_ball2"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/ball"
+        android:layout_above="@+id/btn_start_animation"
+        android:layout_alignParentRight="true"
+        />
+
+    <Button
+        android:id="@+id/btn_start_animation"
+        android:layout_width="match_parent"
+        android:layout_height="83dp"
+        android:textSize="18pt"
+        android:text="start"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="35dp"
+        />
+
+</RelativeLayout>

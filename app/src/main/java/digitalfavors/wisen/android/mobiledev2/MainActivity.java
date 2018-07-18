@@ -2,6 +2,7 @@ package digitalfavors.wisen.android.mobiledev2;
 
 //import android.app.FragmentManager;
 //import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.media.Image;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -41,9 +42,6 @@ public class MainActivity extends AppCompatActivity
 
         //set content view is used to inflate the layout
         setContentView(R.layout.activity_main);
-
-
-
 
         demoBtn =  findViewById(R.id.btn_demo);
         workBtn =  findViewById(R.id.btn_work);

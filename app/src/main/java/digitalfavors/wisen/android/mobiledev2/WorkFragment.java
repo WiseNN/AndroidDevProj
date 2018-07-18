@@ -3,13 +3,17 @@ package digitalfavors.wisen.android.mobiledev2;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-public class WorkFragment extends android.support.v4.app.Fragment
+public class WorkFragment extends android.support.v4.app.Fragment implements View.OnTouchListener
 {
+
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -41,4 +45,21 @@ public class WorkFragment extends android.support.v4.app.Fragment
     }
 
 
+
+
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+
+
+        float x = (event.getRawX());
+
+//        float y = event.getRawY();
+
+        v.setTranslationX(-x);
+//        v.setTranslationY(y);
+        Log.d("track", x+" ");
+
+        return true;
+
+    }
 }

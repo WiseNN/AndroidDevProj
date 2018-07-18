@@ -4,6 +4,7 @@
 
     <item
         android:drawable="@drawable/chatfrom"
+
         >
 
     </item>

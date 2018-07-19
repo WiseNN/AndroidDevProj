@@ -1,22 +1,28 @@
 package digitalfavors.wisen.android.mobiledev2;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.GestureDetectorCompat;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -57,6 +63,8 @@ public class MessangerView extends Activity
     long initLoadMessageCount = 0;
     long currentMsgCount = 0;
     boolean isInitialLoadFinished = false;
+    private GestureDetectorCompat mDetector;
+
 
 
 
@@ -67,18 +75,12 @@ public class MessangerView extends Activity
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
         messagesList = new ArrayList<>();
-//
-//        messagesList.add("Hey Whats Up!");
-//        messagesList.add("Nothing much, just writing this app ");
-//        messagesList.add("Are you coming over later? \nI was gonn see if we could go " +
-//                "to the spot you love ;) \n\nYou don't have to , just let me know!");
-//        messagesList.add("Ok...give me like 1 hour, if you don't mind.");
-//
-//
         messengerView = (RelativeLayout) LayoutInflater.from(getApplicationContext()).inflate(R.layout.msg_screen, null);
         mListView = messengerView.findViewById(R.id.lv_for_messages);
         msgTextField = messengerView.findViewById(R.id.message_text_field);
         setContentView(messengerView);
+        //gesture detector in parentView, to check for keyboard retreat
+        setupKeyboardGesture();
 
 
         //get firebase reference
@@ -122,9 +124,6 @@ public class MessangerView extends Activity
                     mListView.setSelection(messagesList.size());
 
 
-
-
-
                 }//this should be called when a new message gets edded to the messagesList
                 else if(isInitialLoadFinished){
 
@@ -132,8 +131,6 @@ public class MessangerView extends Activity
                     adapter.notifyDataSetChanged();
                     mListView.smoothScrollToPosition(messagesList.size()-1);
                 }
-
-
             }
 
             @Override
@@ -179,6 +176,9 @@ public class MessangerView extends Activity
             public void onFailure(@NonNull Exception e) {
                 Log.d("onFailure", "FAILED to write "+senderUsername+"'s message to the" +
                         "database");
+
+                //show database fail error on screen @ application level
+                Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
             }
         };
 
@@ -239,23 +239,26 @@ public class MessangerView extends Activity
 
 
 
-
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-
+        //create gesture recognizer for the mListView, on tap keyboard will retreat if inView
 
 
 
     }
+
+
+    private void setupKeyboardGesture()
+    {
+        mDetector = new GestureDetectorCompat(this, new MyGestureListener());
+        mListView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                mDetector.onTouchEvent(event);
+
+                return onTouchEvent(event);
+            }
+        });
+    }
+
 
 
 
@@ -299,4 +302,22 @@ public class MessangerView extends Activity
                 .child(recipeintUsername).child(messagesKey).removeEventListener(adapter.newMsgEventListener);
     }
 
+    class MyGestureListener extends GestureDetector.SimpleOnGestureListener {
+        private static final String DEBUG_TAG = "Gestures";
+
+        @Override
+        public boolean onDown(MotionEvent event) {
+            Log.d(DEBUG_TAG,"onDown: " + event.toString());
+            // Check if no view has focus:
+
+            View view = getCurrentFocus();
+            if (view != null) {
+                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            }
+            return true;
+        }
+
+
+    }
 }

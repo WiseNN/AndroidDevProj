@@ -1,6 +1,9 @@
 package digitalfavors.wisen.android.mobiledev2;
 
 import android.content.Context;
+import android.database.DataSetObserver;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,27 +13,39 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.function.Consumer;
 
 public class MessengerListViewAdapter extends BaseAdapter {
-private ArrayList<String> myList;
+
 Context mContext;
-private Iterable<DataSnapshot> msgsList;
+private ArrayList<DataSnapshot> msgsList;
 long msgsCount;
+long count; //inHouse counter
+
 private String senderUsername;
 private String recipeintUsername;
+private String messagesKey = "messages";
+ChildEventListener newMsgEventListener;
 
 
-MessengerListViewAdapter(String sender, String recipeint,ArrayList<String> list, Iterable<DataSnapshot> msgsList, long msgsCount, Context context)
+
+MessengerListViewAdapter(String sender, String recipeint, ArrayList<DataSnapshot> msgsList,
+                         long msgsCount, Context context)
 {
-    myList = list;
     mContext = context;
     this.msgsList = msgsList;
     this.msgsCount = msgsCount;
     this.senderUsername = sender;
     this.recipeintUsername = recipeint;
+
 
 }
 
@@ -39,7 +54,7 @@ MessengerListViewAdapter(String sender, String recipeint,ArrayList<String> list,
         return msgsList;
     }
 
-    public void setMsgsList(Iterable<DataSnapshot> msgsList)
+    public void setMsgsList(ArrayList<DataSnapshot> msgsList)
     {
         this.msgsList = msgsList;
     }
@@ -47,12 +62,17 @@ MessengerListViewAdapter(String sender, String recipeint,ArrayList<String> list,
     @Override
     public int getCount()
     {
-        return Math.toIntExact(msgsCount);
+        return this.msgsList.size();
+    }
+
+    @Override
+    public void registerDataSetObserver(DataSetObserver observer) {
+        super.registerDataSetObserver(observer);
     }
 
     @Override
     public Object getItem(int position) {
-        return myList.get(position);
+        return msgsList.get(position);
     }
 
     @Override
@@ -63,17 +83,19 @@ MessengerListViewAdapter(String sender, String recipeint,ArrayList<String> list,
     @Override
     public View getView(int position, View convertView, ViewGroup parent)
     {
-        RelativeLayout relView;
+
+
+        RelativeLayout relView = null;
 
 
         Log.d("Getview", "getView");
 
 
-        //check if there is another message
-        if(msgsList.iterator().hasNext())
-        {
+            //count current number of messages
+            count++;
+
             //if so, get next message
-            DataSnapshot nextMsg = msgsList.iterator().next();
+            DataSnapshot nextMsg = msgsList.get(position);
 
             //get username of sender
             String sender = (String)nextMsg.child("sender").getValue();
@@ -82,6 +104,7 @@ MessengerListViewAdapter(String sender, String recipeint,ArrayList<String> list,
             String messageText = (String)nextMsg.child("message").getValue();
 
             Log.d("msgObj", "sender -> "+sender+" :: messageText -> "+messageText);
+
             //if sender name is recipeint's...load left-side, otherwise load right-side
             if(sender.equals(recipeintUsername))
             {
@@ -94,7 +117,7 @@ MessengerListViewAdapter(String sender, String recipeint,ArrayList<String> list,
                 //load left messaging textView
                 TextView tvBubble = relView.findViewById(R.id.tv_left_bubble);
                 tvBubble.setText(messageText);
-                return relView;
+
 
             }
             else if(sender.equals(senderUsername))
@@ -105,16 +128,21 @@ MessengerListViewAdapter(String sender, String recipeint,ArrayList<String> list,
                         .inflate(R.layout.messages_screen_item_right, parent,false );
                 TextView tvBubble = relView.findViewById(R.id.tv_right_bubble);
                 tvBubble.setText(messageText);
-                return relView;
+
             }
-            else{return convertView;}
 
-        }else{
-            return convertView;
-        }
+            return relView;
+
+    }
 
 
+
+    public void addMessage(DataSnapshot message)
+    {
+        //add message
+        msgsList.add(message);
 
 
     }
+
 }

@@ -45,13 +45,15 @@ public class DemoFragment extends android.support.v4.app.Fragment
                 "digitalfavors.wisen.android.mobiledev2.TimerActivity",
                 "digitalfavors.wisen.android.mobiledev2.AnimationActivity",
                 "digitalfavors.wisen.android.mobiledev2.DragActivity",
-                "digitalfavors.wisen.android.mobiledev2.ViewSlider"
+                "digitalfavors.wisen.android.mobiledev2.ViewSlider",
+                "digitalfavors.wisen.android.mobiledev2.LoginActivity"
         };
         String[] dataList = {
                 "A","ViewPager","C","Small Notification", "Large Notification", "Pic Notification",
                 "Messenger","AdvancedViewPager","Radio Button Activity","Check Box Activity",
                 "Dialogs","Timer/Handler Activity","Spring Animation Activity",
-                "Drag Activity","ViewSlider"
+                "Drag Activity","ViewSlider","login Activity"
+
         };
 
         int size = dataList.length;

@@ -1,52 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:background="#232223">
-    <EditText
-        android:id="@+id/search_username_edit_text_box"
+    >
+<Button
+    android:id="@+id/btn_signOut"
+    android:layout_width="match_parent"
+    android:layout_height="150dp"
+    android:text="Sign Out"
+    android:textSize="12pt"
+    android:textAllCaps="false"
+    />
+
+    <RelativeLayout
+        android:id="@+id/search_chat_username_relLayout"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:orientation="vertical"
+        android:background="#232223"
+        >
+        <EditText
+            android:id="@+id/search_username_edit_text_box"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
 
-        android:layout_marginTop="150dp"
-        android:background="#19181D"
-        android:hint="searh username"
-        android:textSize="10pt"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        android:maxLines="1"
-        android:inputType="text"
-        android:layout_below="@id/login_title_layout"
-        android:layout_centerHorizontal="true"
-        android:gravity="center"
+            android:layout_marginTop="150dp"
+            android:background="#19181D"
+            android:hint="searh username"
+            android:textSize="10pt"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:maxLines="1"
+            android:inputType="text"
+            android:layout_below="@id/login_title_layout"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
 
-        />
+            />
 
-    <Button
-        android:id="@+id/btn_search_username"
-        android:layout_width="match_parent"
-        android:layout_height="250dp"
-        android:text="Search"
-        android:textAllCaps="false"
-        android:textStyle="bold"
-        android:textColor="@android:color/white"
-        android:fontFamily="sans-serif"
-        android:textSize="10pt"
-        android:background="#002340"
-        android:gravity="center"
-        android:layout_gravity="center_horizontal"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="0dp"
-
-
+        <Button
+            android:id="@+id/btn_search_username"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:text="Search"
+            android:textAllCaps="false"
+            android:textStyle="bold"
+            android:textColor="@android:color/white"
+            android:fontFamily="sans-serif"
+            android:textSize="10pt"
+            android:background="#002340"
+            android:gravity="center"
+            android:layout_gravity="center_horizontal"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="0dp"
 
 
 
 
-        />
 
 
-</RelativeLayout>
+            />
+
+
+    </RelativeLayout>
+</FrameLayout>

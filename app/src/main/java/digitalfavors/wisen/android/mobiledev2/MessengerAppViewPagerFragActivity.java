@@ -12,6 +12,9 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.widget.Toast;
+
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -21,6 +24,7 @@ public class MessengerAppViewPagerFragActivity extends FragmentActivity
 {
     //number of pager in viewPger
     int numOfPages = 0;
+    Toast errorReporter;
 
     //viewPager reference
     ViewPager mViewPager;
@@ -80,6 +84,24 @@ public class MessengerAppViewPagerFragActivity extends FragmentActivity
 
         }
     };
+
+    @Override
+    public void onBackPressed() {
+
+        if(FirebaseAuth.getInstance().getCurrentUser() == null)
+        {
+            super.onBackPressed();
+        }else{
+
+            if(errorReporter != null)
+            {
+                errorReporter.cancel();
+            }
+            errorReporter = Toast.makeText(getApplicationContext(),"Please sign-out before leaving. Thanks!",Toast.LENGTH_SHORT);
+            errorReporter.show();
+
+        }
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

@@ -21,6 +21,7 @@ import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -47,6 +48,7 @@ import java.util.TimeZone;
 public class MessangerView extends Fragment
 {
 
+    TextView messageThreadTitle;
     ArrayList<DataSnapshot> messagesList;
     ListView mListView;
     EditText msgTextField;
@@ -83,6 +85,7 @@ public class MessangerView extends Fragment
         messengerView = (RelativeLayout) LayoutInflater.from(getContext().getApplicationContext()).inflate(R.layout.msg_screen, null);
         mListView = messengerView.findViewById(R.id.lv_for_messages);
         msgTextField = messengerView.findViewById(R.id.message_text_field);
+        messageThreadTitle = messengerView.findViewById(R.id.tv_message_thread_title);
 
         //gesture detector in parentView, to check for keyboard retreat
         setupKeyboardGesture();
@@ -266,8 +269,11 @@ public class MessangerView extends Fragment
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
         return messengerView;
     }
+
+
 
     @Override
     public void onResume() {
@@ -343,10 +349,16 @@ public class MessangerView extends Fragment
         {
             recipeintUsername = "NO_RECIPEINT_USERNAME";
             msgTextField.setEnabled(false);
+            //set empty string as header
+            messageThreadTitle.setText("");
+
         }//else assign result to recipeintUsername
         else{
             recipeintUsername = (String)result;
+            //set title for chat thread (as recipeint's username)
+            messageThreadTitle.setText(recipeintUsername);
         }
+
     }
 
 

@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.animation.DynamicAnimation;
 import android.support.animation.SpringAnimation;
 import android.support.animation.SpringForce;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.transition.Slide;
 import android.transition.Transition;
@@ -30,9 +31,17 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.HashMap;
 
 public class CreateAccountDialog extends DialogFragment {
 
@@ -126,38 +135,76 @@ public class CreateAccountDialog extends DialogFragment {
                     if(task.isSuccessful())
                     {
 
-                        //Log fireAuth response
-                        Log.d("firebase-auth", "createAccount Successful!");
+                        FirebaseDatabase.getInstance().getReference()
+                                .addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                        //clear editTextField on success
-                        usernameEditTextView.setText("");
-                        passwordEditTextView.setText("");
-                        Toast.makeText(getContext(),username+", your account has been created!" , Toast.LENGTH_SHORT).show();
-                        dismiss();
 
-                        //if auto login is check, log new user in
-                        if(R.id.signIn_radio_btn == checkedRadioBtnId)
-                        {
-                            Intent loginIntent= new Intent(getActivity(), MyIntentService.class);
+                                HashMap<String, Object> map = new HashMap<>();
 
-                            //set action for intent
-                            loginIntent.setAction(MyIntentService.LOGIN_ACTION);
+                                //create key for users
+                                String key = dataSnapshot.getRef().push().getKey();
 
-                            //create bundle to store username and password
-                            Bundle userCredintals = new Bundle();
-                            userCredintals.putString("username", username);
-                            userCredintals.putString("password", password);
+                                map.put("privateChat/_"+username, 1);
+                                map.put("users/"+key,username);
+                                dataSnapshot.getRef().updateChildren(map)
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
 
-                            //put the bundle inside of intent
-                            loginIntent.putExtras(userCredintals);
 
-                            loginIntent.putExtra("check", "isSent!");
+                                        //Log fireAuth response
+                                        Log.d("firebase-auth", "createAccount Successful!");
 
-                            //broadcast to receiver
-                            LoginActivity loginActivity = (LoginActivity) getActivity();
-                            loginActivity.startService(loginIntent);
+                                        //clear editTextField on success
+                                        usernameEditTextView.setText("");
+                                        passwordEditTextView.setText("");
 
-                        }
+                                        //show account created notification
+                                        errorReporter.cancel();
+                                        errorReporter.setText(username+", your account has been created!");
+                                        errorReporter.show();
+
+                                        //dismiss dialog
+                                        dismiss();
+
+                                        //if auto login is check, log new user in
+                                        if(R.id.signIn_radio_btn == checkedRadioBtnId)
+                                        {
+                                            Intent loginIntent= new Intent(getActivity(), MyIntentService.class);
+
+                                            //set action for intent
+                                            loginIntent.setAction(MyIntentService.LOGIN_ACTION);
+
+                                            //create bundle to store username and password
+                                            Bundle userCredintals = new Bundle();
+                                            userCredintals.putString("username", username);
+                                            userCredintals.putString("password", password);
+
+                                            //put the bundle inside of intent
+                                            loginIntent.putExtras(userCredintals);
+
+                                            loginIntent.putExtra("check", "isSent!");
+
+                                            //broadcast to receiver
+                                            LoginActivity loginActivity = (LoginActivity) getActivity();
+                                            loginActivity.startService(loginIntent);
+
+                                        }
+
+
+                                    }
+                                });
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
+
+
 
                     }//else print the reason for account not created or exception
                     else{

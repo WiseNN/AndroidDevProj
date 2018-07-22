@@ -1,25 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
+    android:id="@+id/quick_chat_login_layout"
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#232228"
-    android:orientation="vertical">
+    android:orientation="vertical"
+
+    >
 
     <LinearLayout
+        android:id="@+id/login_title_layout"
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:orientation="horizontal"
         android:gravity="bottom|center"
         android:padding="30dp"
+        android:layout_alignParentTop="true"
         >
         <TextView
+            android:id="@+id/login_title_1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="QuickChat"
             android:gravity="center_horizontal"
             android:textSize="10pt"
+
             />
         <TextView
+            android:id="@+id/login_title_2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Login"
@@ -31,7 +39,7 @@
     </LinearLayout>
 
     <EditText
-        android:id="@+id/edit_text_username"
+        android:id="@+id/edit_text_login_username"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginLeft="30dp"
@@ -43,23 +51,27 @@
         android:paddingRight="20dp"
         android:maxLines="1"
         android:inputType="text"
+        android:layout_below="@id/login_title_layout"
         />
     <EditText
-        android:id="@+id/edit_text_password"
+        android:id="@+id/edit_text_login_password"
         android:fontFamily="sans-serif"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
-        android:layout_marginTop="30dp"
+
         android:background="#19181D"
         android:hint="Password"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
         android:maxLines="1"
         android:inputType="textPassword"
+        android:layout_above="@id/btn_account_login"
+
         />
     <Button
+        android:id="@+id/btn_account_login"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginLeft="30dp"
@@ -69,6 +81,7 @@
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
         android:text="LOG IN"
+        android:layout_above="@id/footer_text_layout"
         />
     <TextView
         android:layout_width="match_parent"
@@ -76,21 +89,24 @@
         android:hint="for educational purposes only"
         android:gravity="center"
         android:paddingTop="2dp"
+        android:layout_below="@id/btn_account_login"
         />
     <LinearLayout
+        android:id="@+id/footer_text_layout"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="200dp"
         android:orientation="horizontal"
-        android:gravity="bottom|center"
-
+        android:gravity="center"
+        android:paddingBottom="10dp"
+        android:layout_alignParentBottom="true"
         >
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:hint="I don't have an account yet."
-            android:gravity="center_horizontal"
-            android:textSize="8pt"
 
+            android:textSize="8pt"
+            android:layout_gravity="bottom"
             />
         <TextView
             android:id="@+id/tv_create_account"
@@ -98,13 +114,16 @@
             android:layout_height="wrap_content"
             android:text="Create one"
             android:textStyle="bold"
-            android:gravity="center_horizontal"
-            android:paddingLeft="3dp"
+
+            android:paddingStart="3dp"
             android:textSize="8pt"
             android:textColor="#74B4F2"
             android:clickable="true"
+            android:focusable="true"
+            android:layout_gravity="bottom"
+
             />
     </LinearLayout>
 
 
-</LinearLayout>
+</RelativeLayout>

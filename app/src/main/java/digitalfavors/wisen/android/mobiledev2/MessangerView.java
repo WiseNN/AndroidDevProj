@@ -1,11 +1,14 @@
 package digitalfavors.wisen.android.mobiledev2;
 
-import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GestureDetectorCompat;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -18,7 +21,6 @@ import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -33,21 +35,16 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import org.json.JSONObject;
-
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.TimeZone;
 
 
 
-public class MessangerView extends Activity
+public class MessangerView extends Fragment
 {
 
     ArrayList<DataSnapshot> messagesList;
@@ -55,8 +52,8 @@ public class MessangerView extends Activity
     EditText msgTextField;
     RelativeLayout messengerView;
     MessengerListViewAdapter adapter;
-    final String senderUsername = "WiseNN";
-    final String recipeintUsername = "tellMeWhen2Go";
+    String senderUsername;
+    String recipeintUsername;
     final String privateChatKey = "privateChat";
     final String userPostsKey = "user-posts";
     final String messagesKey = "messages";
@@ -68,19 +65,32 @@ public class MessangerView extends Activity
 
 
 
+
+
+
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+
+
+
+        //adjust screen when keyboard is present
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
         messagesList = new ArrayList<>();
-        messengerView = (RelativeLayout) LayoutInflater.from(getApplicationContext()).inflate(R.layout.msg_screen, null);
+        messengerView = (RelativeLayout) LayoutInflater.from(getContext().getApplicationContext()).inflate(R.layout.msg_screen, null);
         mListView = messengerView.findViewById(R.id.lv_for_messages);
         msgTextField = messengerView.findViewById(R.id.message_text_field);
-        setContentView(messengerView);
+
         //gesture detector in parentView, to check for keyboard retreat
         setupKeyboardGesture();
+
+        //set username and recipeintUsername (if not present disable message textField)
+        checkUserArguments();
+
+
 
 
         //get firebase reference
@@ -114,7 +124,7 @@ public class MessangerView extends Activity
                     isInitialLoadFinished = true;
 
                     adapter = new MessengerListViewAdapter(senderUsername, recipeintUsername, messagesList,
-                            initLoadMessageCount, MessangerView.this);
+                            initLoadMessageCount, getContext());
 
                     //set the listView adapter
                     mListView.setAdapter(adapter);
@@ -178,7 +188,7 @@ public class MessangerView extends Activity
                         "database");
 
                 //show database fail error on screen @ application level
-                Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext().getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
             }
         };
 
@@ -207,18 +217,25 @@ public class MessangerView extends Activity
                     //create message map
                     HashMap<String, String> messageObj = createMessage(senderUsername, v.getText().toString());
 
-                    //mesage uid & timestamp
+                    //create private message key for new message
                     String privateChatMsgkey = DBRef.child(privateChatKey).child(senderUsername).child(recipeintUsername).child(messagesKey).push().getKey();
-                    String privateChatMsgPath = privateChatKey+"/"+senderUsername+"/"+recipeintUsername+"/"+messagesKey+"/"+privateChatMsgkey;
+                    //append private message key, to newly created private message path for current user
+                    String userPrivateChatMsgPath = privateChatKey+"/"+senderUsername+"/"+recipeintUsername+"/"+messagesKey+"/"+privateChatMsgkey;
+                    //append private message key, to newly created private message path for recipeint user
+                    String recipeintPrivateChatMsgPath = privateChatKey+"/"+recipeintUsername+"/"+senderUsername+"/"+messagesKey+"/"+privateChatMsgkey;
+
+                    //create new user-post key for current message
                     String userPostMsgKey = DBRef.child(userPostsKey).child(senderUsername).child(messageObj.get("date")).push().getKey();
+                    // append user-post key to user-post, to create user-post path
                     String userPostMsgPath =  userPostsKey+"/"+senderUsername+"/"+messageObj.get("date")+"/"+userPostMsgKey;
 
 
                     //create childUpdates map
                     HashMap<String, Object> childUpdates = new HashMap<String, Object>();
 
-                    //put privateChat childUpdate in map
-                    childUpdates.put(privateChatMsgPath, messageObj);
+                    //put privateChat childUpdates in map
+                    childUpdates.put(userPrivateChatMsgPath, messageObj);
+                    childUpdates.put(recipeintPrivateChatMsgPath, messageObj);
 
                     //clone & remove date & sender from messageObj
                     HashMap<String, Object> userPostMap = (HashMap<String, Object>) messageObj.clone();
@@ -239,22 +256,44 @@ public class MessangerView extends Activity
 
 
 
+
         //create gesture recognizer for the mListView, on tap keyboard will retreat if inView
 
 
 
     }
 
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return messengerView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        //remove the new message event listener
+//        FirebaseDatabase.getInstance().getReference().child("privateChat").child(senderUsername)
+//                .child(recipeintUsername).child(messagesKey).removeEventListener(adapter.newMsgEventListener);
+
+
+    }
 
     private void setupKeyboardGesture()
     {
-        mDetector = new GestureDetectorCompat(this, new MyGestureListener());
+        mDetector = new GestureDetectorCompat(getContext(), new MyGestureListener());
         mListView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 mDetector.onTouchEvent(event);
 
-                return onTouchEvent(event);
+                return getActivity().onTouchEvent(event);
             }
         });
     }
@@ -291,16 +330,28 @@ public class MessangerView extends Activity
         return messageObj;
     }
 
+    private void checkUserArguments()
+    {
+        //get username from args Bundle
+        senderUsername = (String)getArguments().get("username");
 
+        //check if recipeintUsername param is avail
+        Object result = getArguments().get("recipeintUsername");
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-
-        //remove the new message event listener
-        FirebaseDatabase.getInstance().getReference().child("privateChat").child(senderUsername)
-                .child(recipeintUsername).child(messagesKey).removeEventListener(adapter.newMsgEventListener);
+        //if result is null, disable the msgTextField
+        if(result == null)
+        {
+            recipeintUsername = "NO_RECIPEINT_USERNAME";
+            msgTextField.setEnabled(false);
+        }//else assign result to recipeintUsername
+        else{
+            recipeintUsername = (String)result;
+        }
     }
+
+
+
+
 
     class MyGestureListener extends GestureDetector.SimpleOnGestureListener {
         private static final String DEBUG_TAG = "Gestures";
@@ -310,9 +361,9 @@ public class MessangerView extends Activity
             Log.d(DEBUG_TAG,"onDown: " + event.toString());
             // Check if no view has focus:
 
-            View view = getCurrentFocus();
+            View view = getActivity().getCurrentFocus();
             if (view != null) {
-                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
             }
             return true;

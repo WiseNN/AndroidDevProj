@@ -252,6 +252,14 @@ public class MessangerView extends Fragment
                     DBRef.updateChildren(childUpdates).addOnSuccessListener(successAddMessageListener).addOnFailureListener(failedAddMessageListener);
 
                     handled = true;
+
+                    //hide keyboard
+                    View view =  getActivity().getCurrentFocus();
+                    if (view != null)
+                    {
+                        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                    }
                 }
                 return handled;
             }

@@ -2,11 +2,9 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
 
-    <item
-        android:drawable="@drawable/chatfrom"
+    <item>
 
-        >
-
+<nine-patch android:src="@drawable/green_msg_bubble_nine"/>
     </item>
 
 </selector>

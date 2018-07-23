@@ -15,15 +15,14 @@
         android:text="Hey Whats up. "
         android:textColor="@android:color/black"
         android:textAlignment="center"
-        android:paddingLeft="30dp"
-        android:paddingRight="20dp"
-        android:paddingBottom="15dp"
-        android:paddingTop="15dp"
+
         android:background="@drawable/msg_bubble_img_right"
         android:layout_alignParentRight="true"
         android:layout_marginTop="25px"
+        android:paddingRight="10dp"
         android:gravity="center_vertical"
         android:textSize="26sp"
+
         />
 
 

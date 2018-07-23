@@ -79,15 +79,15 @@ public class LoginActivity extends Activity
 
         //create username edit textField and create onTextChange handler
         usernameTextField = findViewById(R.id.edit_text_login_username);
-        usernameTextField.addTextChangedListener(new UsernameTextListener());
+        usernameTextField.addTextChangedListener(new UsernameTextListener(LoginActivity.this));
 
         //create password edit textField and create onTextChange handler
         passwordTextField = findViewById(R.id.edit_text_login_password);
-        passwordTextField.addTextChangedListener(new PasswordTextListener());
+        passwordTextField.addTextChangedListener(new PasswordTextListener(LoginActivity.this));
 
         //set the on edit keyboard listener (username & password field), listen for enter key
-        usernameTextField.setOnEditorActionListener(new UsernameTextListener());
-        passwordTextField.setOnEditorActionListener(new PasswordTextListener());
+        usernameTextField.setOnEditorActionListener(new UsernameTextListener(LoginActivity.this));
+        passwordTextField.setOnEditorActionListener(new PasswordTextListener(LoginActivity.this));
 
         //create login button, and submit username & password textFields
         loginButton = findViewById(R.id.btn_account_login);
@@ -151,13 +151,14 @@ public class LoginActivity extends Activity
                             if(task.getException() != null)
                             {
 
-                                errorReporterToast.setText(task.getException().getMessage());
+                                errorReporterToast = Toast.makeText(getApplicationContext(),task.getException().getMessage() ,Toast.LENGTH_SHORT );
                             }else{
                                 if(task.getResult() != null)
                                 {
-                                    errorReporterToast.setText(task.getResult().toString());
+                                    errorReporterToast = Toast.makeText(getApplicationContext(),task.getResult().toString() ,Toast.LENGTH_SHORT );
                                 }
                             }
+
                             Log.d("firebase-auth", "signIn Failed!");
                             errorReporterToast.show();
                         }
@@ -208,6 +209,8 @@ public class LoginActivity extends Activity
             }
         });
     }
+
+
 
     class MyGestureListener extends GestureDetector.SimpleOnGestureListener {
         private static final String DEBUG_TAG = "Gestures";

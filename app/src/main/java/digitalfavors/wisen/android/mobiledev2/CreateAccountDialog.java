@@ -161,9 +161,13 @@ public class CreateAccountDialog extends DialogFragment {
                                         usernameEditTextView.setText("");
                                         passwordEditTextView.setText("");
 
+
                                         //show account created notification
-                                        errorReporter.cancel();
-                                        errorReporter.setText(username+", your account has been created!");
+                                        if(errorReporter != null)
+                                        {
+                                            errorReporter.cancel();
+                                        }
+                                        errorReporter = Toast.makeText(getActivity(),username+", your account has been created!",Toast.LENGTH_SHORT);
                                         errorReporter.show();
 
                                         //dismiss dialog

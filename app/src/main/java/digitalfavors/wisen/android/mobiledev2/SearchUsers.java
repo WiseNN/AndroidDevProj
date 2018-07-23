@@ -1,5 +1,6 @@
 package digitalfavors.wisen.android.mobiledev2;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -7,6 +8,7 @@ import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.GestureDetectorCompat;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
@@ -14,6 +16,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -38,11 +42,15 @@ public class SearchUsers extends Fragment {
     String privateChatKey = "privateChat";
     Button signOutBtn;
     private GestureDetector mDetector;
+    private GestureDetectorCompat mDetectorForKeyboard;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
         SimpleGestureListener simpleGestureListener = new SimpleGestureListener();
         simpleGestureListener.setListener(new SimpleGestureListener.Listener() {
             @Override
@@ -76,13 +84,15 @@ public class SearchUsers extends Fragment {
 
     private void slideScreenUp()
     {
-        signOutBtn.animate().yBy(-signOutBtn.getHeight());
-        searchChatUserRelLayout.animate().yBy(-signOutBtn.getHeight());
+        long animDuration = 100;
+        signOutBtn.animate().setDuration(animDuration).yBy(-signOutBtn.getHeight());
+        searchChatUserRelLayout.animate().setDuration(animDuration).yBy(-signOutBtn.getHeight());
     }
     private void slideScreenDown()
     {
-        signOutBtn.animate().yBy(signOutBtn.getHeight());
-        searchChatUserRelLayout.animate().yBy(signOutBtn.getHeight());
+        long animDuration = 170;
+        signOutBtn.animate().setDuration(animDuration).yBy(signOutBtn.getHeight());
+        searchChatUserRelLayout.animate().setDuration(animDuration).yBy(signOutBtn.getHeight());
     }
 
 
@@ -97,6 +107,7 @@ public class SearchUsers extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
+
         //get search chat screen layout
         chatSearchLayout = (FrameLayout) inflater.inflate(R.layout.search_chat_user,container,false);
 
@@ -105,6 +116,8 @@ public class SearchUsers extends Fragment {
 
         //get search edit text field
         searchUserEditTextField = chatSearchLayout.findViewById(R.id.search_username_edit_text_box);
+
+        searchUserEditTextField.setOnEditorActionListener(new PasswordTextListener(getActivity()));
 
         //get search user button
         searchChatUserBtn = chatSearchLayout.findViewById(R.id.btn_search_username);
@@ -141,6 +154,8 @@ public class SearchUsers extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
 
+
+
         //search for recipeintUser when search button is clicked
         searchChatUserBtn.setOnClickListener((view) -> searchRecipeintChatUser());
 
@@ -167,7 +182,7 @@ public class SearchUsers extends Fragment {
         });
 
         //when user drags screen, signOut button will appear
-        chatSearchLayout.setOnTouchListener(new View.OnTouchListener() {
+        searchChatUserRelLayout.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 return mDetector.onTouchEvent(event);
@@ -265,9 +280,38 @@ public class SearchUsers extends Fragment {
 
     }
 
+    private void setupKeyboardGesture()
+    {
+        mDetectorForKeyboard = new GestureDetectorCompat(getContext(), new MyGestureListener());
+        chatSearchLayout.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                mDetector.onTouchEvent(event);
+
+                return getActivity().onTouchEvent(event);
+            }
+        });
+    }
 
 
+    class MyGestureListener extends GestureDetector.SimpleOnGestureListener {
+        private static final String DEBUG_TAG = "Gestures";
 
+        @Override
+        public boolean onDown(MotionEvent event) {
+            Log.d(DEBUG_TAG,"onDown: " + event.toString());
+            // Check if no view has focus:
+
+            View view = getActivity().getCurrentFocus();
+            if (view != null) {
+                InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            }
+            return true;
+        }
+
+
+    }
 
 }
 

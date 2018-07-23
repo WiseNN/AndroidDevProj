@@ -4,11 +4,7 @@
 
     <item>
 
-        <rotate
-            android:fromDegrees="180"
-            android:toDegrees="0"
-
-            android:drawable="@drawable/chatfrom"/>
+        <nine-patch android:src="@drawable/blue_msg_bubble_nine"/>
     </item>
 
 </selector>
